@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spendwise: Expense Tracker
 
-## Getting Started
+A full-stack, mobile-friendly expense tracker built with **Next.js**, **TypeScript**, **Tailwind CSS** and **Supabase** (Postgres and Auth).
 
-First, run the development server:
+**Live demo:** _add your Vercel link here_. Click **Try the demo account** to look around without signing up.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<!-- Add a screenshot: save one as public/screenshot.png and uncomment the next line -->
+<!-- ![Spendwise dashboard](public/screenshot.png) -->
+
+## Features
+
+- Email and password sign-up and login (Supabase Auth)
+- Add, edit and delete expenses with an amount, category, date and note
+- Monthly dashboard with the total spent, the number of transactions, the top category and a breakdown by category
+- Filter by month and by category
+- Responsive layout that works on phones, tablets and desktops, with dark mode
+- **Row Level Security**: each user can only read and change their own data, and Postgres enforces this, not just the UI
+
+## Tech stack
+
+| Layer    | Tech                                                |
+| -------- | --------------------------------------------------- |
+| Frontend | Next.js 16 (App Router, Server Components), React 19 |
+| Styling  | Tailwind CSS 4                                      |
+| Backend  | Next.js Server Actions                              |
+| Database | Supabase Postgres with Row Level Security           |
+| Auth     | Supabase Auth (`@supabase/ssr`, cookie sessions)    |
+| Hosting  | Vercel                                              |
+
+## Run locally
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In the Supabase **SQL Editor**, run [`supabase/schema.sql`](supabase/schema.sql).
+3. Copy `.env.example` to `.env.local` and fill in the values from **Project Settings → API** (the publishable key or the legacy anon key both work):
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+   ```
+4. Install and start the app:
+   ```bash
+   npm install
+   npm run dev
+   ```
+5. Open http://localhost:3000.
+
+> For quick testing, you can turn off **Authentication → Sign In / Providers → Email → Confirm email** in Supabase so new accounts can log in right away.
+
+### Optional demo account
+
+1. Sign up in the app with `demo@spendwise.app` and a password of your choice.
+2. Run [`supabase/seed-demo.sql`](supabase/seed-demo.sql) to add sample data.
+3. Add `DEMO_EMAIL` and `DEMO_PASSWORD` to `.env.local` (and to Vercel). A **Try the demo account** button then appears on the login page.
+
+## Project structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+src/
+  proxy.ts                 refreshes the session, redirects logged-out users
+  app/page.tsx             dashboard (Server Component)
+  app/actions.ts           add, update and delete expense Server Actions
+  app/login/               login and sign-up page and auth actions
+  components/              ExpenseForm, ExpenseList, Filters, SummaryCards
+  lib/supabase/            browser and server Supabase clients
+  lib/expenses.ts          categories, types and formatting helpers
+supabase/schema.sql        table and RLS policies
+```
