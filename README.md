@@ -2,8 +2,6 @@
 
 A full-stack, mobile-friendly expense tracker built with **Next.js**, **TypeScript**, **Tailwind CSS** and **Supabase** (Postgres and Auth).
 
-**Live demo:** _add your Vercel link here_. Click **Try the demo account** to look around without signing up.
-
 <!-- Add a screenshot: save one as public/screenshot.png and uncomment the next line -->
 <!-- ![Spendwise dashboard](public/screenshot.png) -->
 
